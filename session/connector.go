@@ -16,8 +16,6 @@ type RedisStoreConnector struct {
 }
 
 func (s RedisStoreConnector) Connect() (error, sessions.Store) {
-
-	// if no DB provided, use sqlite3 memory DB
 	if s.RedisExtension == nil {
 		return errors.New("no redis extension in redis session connector"), nil
 	} else {
@@ -29,7 +27,7 @@ func (s RedisStoreConnector) Connect() (error, sessions.Store) {
 	}
 
 	if len(s.Secret) == 0 {
-		return errors.New("sql connector requires secret"), nil
+		return errors.New("redis session connector requires secret"), nil
 	}
 
 	s.store.DefaultMaxAge = s.MaxAge()
