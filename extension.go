@@ -17,14 +17,14 @@ type Extension struct {
 
 func (s *Extension) Init(app *nibbler.Application) error {
 	if len(s.Url) == 0 {
-		s.Url = app.GetConfiguration().Raw.Get("redis", "url").String("")
+		s.Url = app.Config.Raw.Get("redis", "url").String("")
 
 		if len(s.Url) == 0 {
-			s.Url = app.GetConfiguration().Raw.Get("rediscloud", "url").String("")
+			s.Url = app.Config.Raw.Get("rediscloud", "url").String("")
 		}
 
 		if len(s.Url) == 0 {
-			s.Url = app.GetConfiguration().Raw.Get("database", "url").String("")
+			s.Url = app.Config.Raw.Get("database", "url").String("")
 		}
 
 		if len(s.Url) > 0 {
@@ -46,14 +46,18 @@ func (s *Extension) Init(app *nibbler.Application) error {
 	}
 
 	if len(s.Password) == 0 {
-		s.Password = app.GetConfiguration().Raw.Get("redis", "password").String("")
+		s.Password = app.Config.Raw.Get("redis", "password").String("")
 
 		if len(s.Password) == 0 {
-			s.Password = app.GetConfiguration().Raw.Get("database", "password").String("")
+			s.Password = app.Config.Raw.Get("database", "password").String("")
 		}
 	}
 
 	return s.Connect()
+}
+
+func (s *Extension) GetName() string {
+	return "redis"
 }
 
 func (s *Extension) Connect() error {
